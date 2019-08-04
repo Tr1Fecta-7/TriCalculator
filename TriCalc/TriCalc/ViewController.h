@@ -11,11 +11,10 @@
 @interface ViewController : UIViewController <UIAlertViewDelegate>
 
 
-
 // METHOD DECLARATIONS
 - (IBAction)numButtonAction:(UIButton *)sender;
 
-- (IBAction)specialKeyButtonAction:(UIButton *)sender;
+- (IBAction)operatorKeyButtonAction:(UIButton *)sender;
 
 - (IBAction)clearResultsButton:(UIButton *)sender;
 
@@ -23,7 +22,7 @@
 
 - (void)addNumToLabel:(NSString *)numString;
 
-- (NSString *)calculate:(NSString *)specialKey : (NSString *)oldNumber : (NSString *)newNumber;
+- (NSString *)calculate:(NSInteger)specialKey : (NSString *)oldNumber : (NSString *)newNumber;
 
 
 // PROPERTIES
@@ -32,13 +31,12 @@
 
 @property (retain) NSMutableString* muteString;
 
-@property NSString* oldNumber;
+@property NSString* previousOperand;
 
-@property NSString* newsNumber;
+@property NSString* currentOperand;
 
-@property BOOL specialSelected;
+@property BOOL operatorSelected;
 
-@property NSString* specialKey;
 
 @property (strong, nonatomic) IBOutlet UIButton *plusButton1;
 @property (strong, nonatomic) IBOutlet UIButton *minusButton1;
@@ -46,7 +44,4 @@
 @property (strong, nonatomic) IBOutlet UIButton *deelButton1;
 
 
-
-
 @end
-
