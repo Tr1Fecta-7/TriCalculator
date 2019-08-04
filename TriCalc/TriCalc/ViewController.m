@@ -13,42 +13,45 @@
 
 @implementation ViewController
 
+typedef NS_ENUM(NSInteger, operatorKey) {addition = 10, substraction, multiplication, division, none};
+enum operatorKey specKey;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.muteString = [NSMutableString new];
-    self.specialKey = [NSString new];
-    self.oldNumber = [NSString new];
-    self.newsNumber = [NSString new];
+    self.previousOperand = [NSString new];
+    self.currentOperand = [NSString new];
 }
 
 // Check which button is pressed by checking the titleLabel
 
 - (IBAction)numButtonAction:(UIButton *)sender {
-    _plusButton1.backgroundColor = [UIColor lightGrayColor];
-    _minusButton1.backgroundColor = [UIColor lightGrayColor];
-    _multiButton1.backgroundColor = [UIColor lightGrayColor];
-    _deelButton1.backgroundColor = [UIColor lightGrayColor];
+    self.plusButton1.backgroundColor = [UIColor lightGrayColor];
+    self.minusButton1.backgroundColor = [UIColor lightGrayColor];
+    self.multiButton1.backgroundColor = [UIColor lightGrayColor];
+    self.deelButton1.backgroundColor = [UIColor lightGrayColor];
     
     [self addNumToLabel:sender.titleLabel.text];
-    if (self.specialSelected == YES) {
-        self.newsNumber = self.resultsLabel.text;
+    if (self.operatorSelected == YES) {
+        self.currentOperand = self.resultsLabel.text;
     }
     else {
-        self.oldNumber = self.resultsLabel.text;
+        self.previousOperand = self.resultsLabel.text;
+        
     }
 }
 
 
 // Check which specialKey is pressed by checking the titleLabel
-- (IBAction)specialKeyButtonAction:(UIButton *)sender {
+- (IBAction)operatorKeyButtonAction:(UIButton *)sender {
     if (sender.backgroundColor == [UIColor redColor]) { // Check if selected
-        self.specialSelected = NO;
-        self.specialKey = @"";
+        self.operatorSelected = NO;
+        specKey = none;
         sender.backgroundColor = [UIColor lightGrayColor];
     }
     else { // If not selected check which button is pressed and set the specKey
-        self.specialKey = sender.titleLabel.text;
-        self.specialSelected = YES;
+        specKey = sender.tag;
+        self.operatorSelected = YES;
         [sender setBackgroundColor:[UIColor redColor]];
         self.resultsLabel.text = @"";
         [self.muteString setString:@""];
@@ -56,43 +59,42 @@
 }
 
 
-- (NSString *)calculate:(NSString *)specialKey : (NSString *)oldNumber :(NSString *)newNumber {
+- (NSString *)calculate:(NSInteger)specialKey : (NSString *)oldNumber :(NSString *)newNumber {
     int oldsNumber = [oldNumber intValue];
     int newssNumber = [newNumber intValue];
+    NSNumber* result;
     
-    if ([specialKey isEqualToString:@"+"]) {
-        NSString* res = [[NSString alloc] initWithFormat:@"%d", oldsNumber+newssNumber];
-        return res;
+    if (specKey == addition) {
+        result = [NSNumber numberWithInt:oldsNumber+newssNumber];
     }
-    
-    else if ([specialKey isEqualToString:@"-"]) {
-        NSString* res = [[NSString alloc] initWithFormat:@"%d", oldsNumber-newssNumber];
-        return res;
+    else if (specKey == substraction) {
+        result = [NSNumber numberWithInt:oldsNumber-newssNumber];
+        
     }
-    
-    else if ([specialKey isEqualToString:@"x"]) {
-        NSString* res = [[NSString alloc] initWithFormat:@"%d", oldsNumber*newssNumber];
-        return res;
+    else if (specKey == multiplication) {
+        result = [NSNumber numberWithInt:oldsNumber*newssNumber];
+        
     }
-    
-    else if ([specialKey isEqualToString:@"/"]) {
+    else if (specKey == division) {
         float oldsNumber = [oldNumber doubleValue];
-        float newssNumber = [newNumber doubleValue];        NSString* res = [[NSString alloc] initWithFormat:@"%f", oldsNumber/newssNumber];
-        return res;
+        float newssNumber = [newNumber doubleValue];
+        result = [NSNumber numberWithFloat:oldsNumber/newssNumber];
+    }
+    else {
+        return @"ERROR";
     }
     
-   return @"ERROR";
-    
+    return [result stringValue];
 }
 
 
 - (IBAction)showResultsButton:(UIButton *)sender {
-    NSString* results = [self calculate:self.specialKey :self.oldNumber :self.newsNumber];
+    NSString* results = [self calculate:specKey :self.previousOperand :self.currentOperand];
     self.resultsLabel.text = results;
-    self.oldNumber = 0;
-    self.newsNumber = 0;
-    self.specialSelected = NO;
-    self.specialKey = @"";
+    self.previousOperand = nil;
+    self.currentOperand = nil;
+    self.operatorSelected = NO;
+    specKey = none;
     [self.muteString setString:@""];
     
 }
@@ -104,12 +106,12 @@
 
 
 - (IBAction)clearResultsButton:(UIButton *)sender {
-    self.specialSelected = NO;
+    self.operatorSelected = NO;
     _resultsLabel.text = @"";
     [self.muteString setString:@""];
-    self.oldNumber = 0;
-    self.newsNumber = 0;
-    self.specialKey = @"";
+    self.previousOperand = nil;
+    self.currentOperand = nil;
+    specKey = none;
 }
 
 
