@@ -13,14 +13,13 @@
 
 @implementation ViewController
 
-typedef NS_ENUM(NSInteger, operatorKey) {addition = 10, substraction, multiplication, division, none};
-enum operatorKey specKey;
+
+
+//enum operatorKey specKey;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.muteString = [NSMutableString new];
-    self.previousOperand = [NSString new];
-    self.currentOperand = [NSString new];
 }
 
 // Check which button is pressed by checking the titleLabel
@@ -33,10 +32,10 @@ enum operatorKey specKey;
     
     [self addNumToLabel:sender.titleLabel.text];
     if (self.operatorSelected == YES) {
-        self.currentOperand = self.resultsLabel.text;
+        self.currentOperand = [self.resultsLabel.text intValue];
     }
     else {
-        self.previousOperand = self.resultsLabel.text;
+        self.previousOperand = [self.resultsLabel.text intValue];
         
     }
 }
@@ -46,11 +45,11 @@ enum operatorKey specKey;
 - (IBAction)operatorKeyButtonAction:(UIButton *)sender {
     if (sender.backgroundColor == [UIColor redColor]) { // Check if selected
         self.operatorSelected = NO;
-        specKey = none;
+        self.specKey = none;
         sender.backgroundColor = [UIColor lightGrayColor];
     }
     else { // If not selected check which button is pressed and set the specKey
-        specKey = sender.tag;
+        self.specKey = sender.tag;
         self.operatorSelected = YES;
         [sender setBackgroundColor:[UIColor redColor]];
         self.resultsLabel.text = @"";
@@ -59,42 +58,41 @@ enum operatorKey specKey;
 }
 
 
-- (NSString *)calculate:(NSInteger)specialKey : (NSString *)oldNumber :(NSString *)newNumber {
-    int oldsNumber = [oldNumber intValue];
-    int newssNumber = [newNumber intValue];
+- (NSString *)calculate:(int)oldNumber :(int)newNumber {
     NSNumber* result;
+    float oldsNumber = oldNumber;
+    float newssNumber = newNumber;
     
-    if (specKey == addition) {
-        result = [NSNumber numberWithInt:oldsNumber+newssNumber];
+    switch(self.specKey) {
+        case addition:
+            result = [NSNumber numberWithInt:oldNumber+newNumber];
+            break;
+        case substraction:
+            result = [NSNumber numberWithInt:oldNumber-newNumber];
+            break;
+        case multiplication:
+            result = [NSNumber numberWithInt:oldNumber*newNumber];
+            break;
+        case division:
+            result = [NSNumber numberWithFloat:oldsNumber/newssNumber];
+            break;
+        default:
+            return @"ERROR";
+            break;
     }
-    else if (specKey == substraction) {
-        result = [NSNumber numberWithInt:oldsNumber-newssNumber];
-        
-    }
-    else if (specKey == multiplication) {
-        result = [NSNumber numberWithInt:oldsNumber*newssNumber];
-        
-    }
-    else if (specKey == division) {
-        float oldsNumber = [oldNumber doubleValue];
-        float newssNumber = [newNumber doubleValue];
-        result = [NSNumber numberWithFloat:oldsNumber/newssNumber];
-    }
-    else {
-        return @"ERROR";
-    }
-    
     return [result stringValue];
 }
 
 
 - (IBAction)showResultsButton:(UIButton *)sender {
-    NSString* results = [self calculate:specKey :self.previousOperand :self.currentOperand];
+    NSString* results = [self calculate: self.previousOperand :self.currentOperand];
     self.resultsLabel.text = results;
-    self.previousOperand = nil;
-    self.currentOperand = nil;
+    
+    // reset values
+    self.previousOperand = 0;
+    self.currentOperand = 0;
     self.operatorSelected = NO;
-    specKey = none;
+    self.specKey = none;
     [self.muteString setString:@""];
     
 }
@@ -109,13 +107,10 @@ enum operatorKey specKey;
     self.operatorSelected = NO;
     _resultsLabel.text = @"";
     [self.muteString setString:@""];
-    self.previousOperand = nil;
-    self.currentOperand = nil;
-    specKey = none;
+    self.previousOperand = 0;
+    self.currentOperand = 0;
+    self.specKey = none;
 }
 
 
 @end
-
-
-
