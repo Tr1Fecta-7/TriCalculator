@@ -1,2 +1,4 @@
 # TriCalculator
-A basic calc written in Objective-C for IOS 11 and up
+A basic calculator written in Objective-C for IOS 11 and up
+
+https://imgur.com/a/kAMUCpq
