@@ -22,7 +22,7 @@
 
 - (void)addNumToLabel:(NSString *)numString;
 
-- (NSString *)calculate:(NSInteger)specialKey : (NSString *)oldNumber : (NSString *)newNumber;
+- (NSString *)calculate: (int)oldNumber : (int)newNumber;
 
 
 // PROPERTIES
@@ -31,17 +31,19 @@
 
 @property (retain) NSMutableString* muteString;
 
-@property NSString* previousOperand;
+@property int previousOperand;
 
-@property NSString* currentOperand;
+@property int currentOperand;
 
 @property BOOL operatorSelected;
-
 
 @property (strong, nonatomic) IBOutlet UIButton *plusButton1;
 @property (strong, nonatomic) IBOutlet UIButton *minusButton1;
 @property (strong, nonatomic) IBOutlet UIButton *multiButton1;
 @property (strong, nonatomic) IBOutlet UIButton *deelButton1;
 
+typedef NS_ENUM(NSInteger, OperatorKey) {addition = 10, substraction, multiplication, division, none};
+
+@property (nonatomic, assign) OperatorKey specKey;
 
 @end
