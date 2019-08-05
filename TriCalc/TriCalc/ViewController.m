@@ -99,13 +99,13 @@
 
 - (void) addNumToLabel:(NSString *)numString {
     [self.muteString appendFormat:@"%@", numString];
-    _resultsLabel.text = self.muteString;
+    self.resultsLabel.text = self.muteString;
 }
 
 
 - (IBAction)clearResultsButton:(UIButton *)sender {
     self.operatorSelected = NO;
-    _resultsLabel.text = @"";
+    self.resultsLabel.text = @"";
     [self.muteString setString:@""];
     self.previousOperand = 0;
     self.currentOperand = 0;
