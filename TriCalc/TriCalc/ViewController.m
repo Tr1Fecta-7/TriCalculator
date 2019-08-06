@@ -32,10 +32,10 @@
     
     [self addNumToLabel:sender.titleLabel.text];
     if (self.operatorSelected == YES) {
-        self.currentOperand = [self.muteString intValue];
+        self.currentOperand = self.currentOperand * 10 + (int)sender.tag;
     }
     else {
-        self.previousOperand = [self.muteString intValue];
+        self.previousOperand = self.previousOperand * 10 + (int)sender.tag;
         
     }
 }
