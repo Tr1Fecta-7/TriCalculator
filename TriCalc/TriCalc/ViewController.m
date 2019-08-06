@@ -32,14 +32,13 @@
     
     [self addNumToLabel:sender.titleLabel.text];
     if (self.operatorSelected == YES) {
-        self.currentOperand = [self.resultsLabel.text intValue];
+        self.currentOperand = [self.muteString intValue];
     }
     else {
-        self.previousOperand = [self.resultsLabel.text intValue];
+        self.previousOperand = [self.muteString intValue];
         
     }
 }
-
 
 // Check which specialKey is pressed by checking the titleLabel
 - (IBAction)operatorKeyButtonAction:(UIButton *)sender {
